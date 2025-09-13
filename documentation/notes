@@ -1,0 +1,45 @@
+to do:
+    1- standrize all responses (using jsend) [done]
+    2- modify the returned data (using filteration and projection) [done]
+    3- apply pagination [done]
+    4- .env
+    5- cors
+    6- default rout
+    7- error handler and rapper function ==> i. add asyncRapper function to catch errors
+                                             ii. add a middleware to handle any error
+                                             iii. create a class to generate error object
+    8- hashed password with bcrypt
+    9- token concept and verify token using jwt package
+    10- protected routes
+    
+
+
+    const multer = require('multer');
+const appError = require('../utils/appError');
+const {ERROR} = require('../utils/httpReqStatus');
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'uploads')
+    },
+    filename: function (req, file, cb) {
+      const extension = file.mimetype.split('/')[1];
+      const filename = 'user-' + Date.now() + '.' + extension;
+      cb(null, filename)
+    }
+})
+const fileFilter = (req, file, cb) => {
+    if(file.mimetype.split('/')[0] === 'image'){
+        cb(null, true);
+    }
+    else{
+        return cb(appError.create("Only image files are allowed", 400, ERROR), false);
+    }
+}
+const upload = multer({ 
+                        storage: storage,
+                        fileFilter
+                      });
+
+router.route('/').get(getAllUsers);
+router.route('/register').post(upload.single('avater'), register);

@@ -1,0 +1,26 @@
+to use mongoose:
+    1- create data schema
+        "const mongoose = require('mongoose');
+         const Course = new mongoose.Schema({
+             title : {
+                 type: String,
+                 required: true
+             },
+             price : {
+                 type: Number,
+                 required: true
+             }
+         }) 
+        module.exports = mongoose.model('Course', Course);"
+
+    2- you have to connect mongoose to the server using connection string 
+        "const mongoose = require('mongoose');
+         const url = "mongodb+srv://AhmedHazem:<password>@ahmedhazem.chyoy.mongodb.net/coursesCenter?retryWrites=true&w=majority&appName=AhmedHazem"
+         mongoose.connect(url).then(()=>{
+             console.log("DB connected successfully");
+        })"
+
+    3- use the variable of the model to operate on database 
+        "const Course = require('../models/courseModel');"
+        ex:- 
+            await Course.find();
